@@ -1,8 +1,21 @@
 var fs = require('fs');
 
+var filename = "TestFirmata";
+var baud = 57600;
+
 var postDependencies = [];
 var text = "";
 var reportingEnabled = false;
+
+var analogInputEnabled = false;
+var analogOutputEnabled = false;
+var digitalInputEnabled = false;
+var digitalOutputEnabled = false;
+var servoEnabled = false;
+var i2cEnabled = false;
+var firmataExtEnabled = false;
+var schedulerEnabled = false;
+var stepperEnabled = false;
 
 var allFeatures = {
     "DigitalInputFirmata": {
@@ -82,6 +95,40 @@ var featureList = [
     "FirmataScheduler"
 ];
 
+function setEnabledFeatures() {
+    for (var i = 0, len = featureList.length; i < len; i++) {
+        switch (featureList[i]) {
+        case "AnalogInputFirmata":
+            analogInputEnabled = true;
+            break;
+        case "AnalogOutputFirmata":
+            analogOutputEnabled = true;
+            break;
+        case "DigitalInputFirmata":
+            digitalInputEnabled = true;
+            break;
+        case "DigitalOutputFirmata":
+            digitalOutputEnabled = true;
+            break;
+        case "ServoFirmata":
+            servoEnabled = true;
+            break;
+        case "I2CFirmata":
+            i2cEnabled = true;
+            break;
+        case "FirmataExt":
+            firmataExtEnabled = true;
+            break;
+        case "FirmataScheduler":
+            schedulerEnabled = true;
+            break;
+        case "StepperFirmata":
+            stepperEnabled = true;
+            break;
+        }
+    }
+}
+
 function addHeader() {
     text += "#include <Firmata.h>";
     text += "\n\n";
@@ -109,11 +156,11 @@ function addIncludes() {
 
 function addPostDependencies() {
     var includes = "";
-    if (featureList.indexOf("AnalogOutputFirmata") > -1 || featureList.indexOf("ServoFirmata") > -1) {
+    if (analogOutputEnabled || servoEnabled) {
         includes += "#include <utility/AnalogWrite.h>";
         includes += "\n\n";
     }
-    if (featureList.indexOf("AnalogInputFirmata") > -1 || featureList.indexOf("I2CFirmata") > -1) {
+    if (analogInputEnabled || i2cEnabled) {
         includes += "#include <utility/FirmataReporting.h>\n";
         includes += "FirmataReporting reporting;";
         includes += "\n\n";
@@ -129,20 +176,20 @@ function addSystemResetCallbackFn() {
     fn += "  for (byte i = 0; i < TOTAL_PINS; i++) {\n";
     fn += "    if (IS_PIN_ANALOG(i)) {\n";
 
-    if (featureList.indexOf("AnalogInputFirmata") > -1) {
+    if (analogInputEnabled) {
         fn += "      Firmata.setPinMode(i, ANALOG);\n";
     }
 
     fn += "    } else if (IS_PIN_DIGITAL(i)) {\n";
 
-    if (featureList.indexOf("DigitalOutputFirmata") > -1) {
+    if (digitalOutputEnabled) {
         fn += "      Firmata.setPinMode(i, OUTPUT);\n";
     }
 
     fn += "    }\n";
     fn += "  }\n";
 
-    if (featureList.indexOf("FirmataExt") > -1) {
+    if (firmataExtEnabled) {
         fn += "  firmataExt.reset();\n";
     }
 
@@ -156,11 +203,11 @@ function addSetupFn() {
 
     fn += "  Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);\n\n";
 
-    if (featureList.indexOf("AnalogOutputFirmata") > -1 || featureList.indexOf("ServoFirmata") > -1) {
+    if (analogOutputEnabled || servoEnabled) {
         fn += "  Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);\n\n";
     }
 
-    if (featureList.indexOf("FirmataExt") > -1) {
+    if (firmataExtEnabled) {
         for (var i = 0, len = featureList.length; i < len; i++) {
             var feature = allFeatures[featureList[i]];
             if (feature.className !== "FirmataExt") {
@@ -175,7 +222,7 @@ function addSetupFn() {
 
     fn += "  Firmata.attach(SYSTEM_RESET, systemResetCallback);\n\n";
 
-    fn += "  Firmata.begin(57600);\n\n";
+    fn += "  Firmata.begin(" + baud + ");\n\n";
 
     fn += "  systemResetCallback();\n";
 
@@ -187,14 +234,14 @@ function addLoopFn() {
     var fn = "void loop()\n";
     fn += "{\n";
 
-    if (featureList.indexOf("DigitalInputFirmata") > -1) {
+    if (digitalInputEnabled) {
         fn += "  digitalInput.report();\n\n";
     }
 
     fn += "  while(Firmata.available()) {\n";
     fn += "    Firmata.processInput();\n";
 
-    if (featureList.indexOf("FirmataScheduler") > -1) {
+    if (schedulerEnabled) {
         fn += "    if (!Firmata.isParsingMessage()) {\n";
         fn += "      goto runtasks;\n";
         fn += "    }\n";
@@ -209,17 +256,17 @@ function addLoopFn() {
     if (reportingEnabled) {
         fn += "  if (reporting.elapsed()) {\n";
 
-        if (featureList.indexOf("AnalogInputFirmata") > -1) {
+        if (analogInputEnabled) {
             fn += "    analogInput.report();\n";
         }
-        if (featureList.indexOf("I2CFirmata") > -1) {
+        if (i2cEnabled) {
             fn += "    i2c.report();\n";
         }
 
         fn += "  }\n\n";
     }
 
-    if (featureList.indexOf("StepperFirmata") > -1) {
+    if (stepperEnabled) {
         fn += "  stepper.update();\n";
     }
 
@@ -228,6 +275,8 @@ function addLoopFn() {
 }
 
 
+setEnabledFeatures();
+
 addHeader();
 addIncludes();
 addPostDependencies();
@@ -235,4 +284,4 @@ addSystemResetCallbackFn();
 addSetupFn();
 addLoopFn();
 
-fs.writeFileSync('TestFirmata.ino', text);
+fs.writeFileSync(filename + '.ino', text);
