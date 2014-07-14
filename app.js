@@ -1,12 +1,27 @@
 var fs = require('fs');
 
+
 var filename = "TestFirmata";
 var baud = 57600;
 
+var featureList = [
+    "DigitalInputFirmata",
+    "DigitalOutputFirmata",
+    "AnalogInputFirmata",
+    "AnalogOutputFirmata",
+    "ServoFirmata",
+    "I2CFirmata",
+    "OneWireFirmata",
+    "StepperFirmata",
+    "FirmataExt",
+    "FirmataScheduler"
+];
+
+
 var postDependencies = [];
 var text = "";
-var reportingEnabled = false;
 
+var reportingEnabled = false;
 var analogInputEnabled = false;
 var analogOutputEnabled = false;
 var digitalInputEnabled = false;
@@ -80,20 +95,7 @@ var allFeatures = {
         className: "FirmataScheduler",
         instance: "scheduler"
     }
-}
-
-var featureList = [
-    "DigitalInputFirmata",
-    "DigitalOutputFirmata",
-    "AnalogInputFirmata",
-    "AnalogOutputFirmata",
-    "ServoFirmata",
-    "I2CFirmata",
-    "OneWireFirmata",
-    "StepperFirmata",
-    "FirmataExt",
-    "FirmataScheduler"
-];
+};
 
 function setEnabledFeatures() {
     for (var i = 0, len = featureList.length; i < len; i++) {
