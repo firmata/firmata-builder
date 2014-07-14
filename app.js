@@ -276,7 +276,6 @@ function addLoopFn() {
     text += fn;
 }
 
-
 setEnabledFeatures();
 
 addHeader();
