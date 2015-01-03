@@ -1,0 +1,26 @@
+{
+  "name": "FirmataBuilder",
+  "version": "0.0.0",
+  "description": "Generates an Arduio sketch (.ino) file based on a selection of Firmata features.",
+  "author": {
+    "name": "Jeff Hoefs <soundanalogous@gmail.com>",
+    "email": "soundanalogous@gmail.com"
+  },
+  "keywords": [
+    "firmata",
+    "arduino"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rwldrn/johnny-five/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "builder.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "rimraf": "^2.2.8"
+  }
+}

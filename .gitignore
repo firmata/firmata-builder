@@ -1,3 +1,4 @@
 .DS_Store
 
-*.ino
+node_modules/
+output/
