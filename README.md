@@ -21,7 +21,7 @@ To run the prototype in its current state:
 4. Run the following command:
 
     ```bash
-    $ node builder.js
+    $ node demo.js
     ```
 
     An *output* directory will be generated.
