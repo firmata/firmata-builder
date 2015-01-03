@@ -32,11 +32,11 @@ The goal of FirmataBuilder is to make it easy to create a custom Firmata sketch 
 only the features needed for a particular application. Limiting your sketch to
 only the featurs you need (vs the all in one StandardFirmata approach) will make
 your application more efficient (since the microcontroller doesn't have to waste precious clock
-cycles on unused features). It also opens the door to offer a larger selection of features.
+cycles on unused features). Most importantly, it opens the door to offer a larger selection of features.
 With FirmataBuilder a user will be able to make a selection of features and an Arduino Firmata
 sketch will be generated.
 
-There are at least 2 or 3 different ways FirmataBuilder could work:
+There are at least 3 different ways FirmataBuilder could work:
 
 1. As a web application where the user selects features then downloads the generated .ino file.
 2. As a cli utility, something like [yeoman](http://yeoman.io/)
