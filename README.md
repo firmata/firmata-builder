@@ -9,7 +9,7 @@ At this point this project is still just a simple prototype. Lots more to do her
 
 To run the prototype in its current state:
 
-1. Install the configurable version of Firmata in the Arduino IDE: https://github.com/firmata/FirmataBuilder/releases/tag/v0.0.0
+1. Install the [configurable version of Firmata](https://github.com/firmata/arduino/tree/configurable) in the Arduino IDE: https://github.com/firmata/FirmataBuilder/releases/tag/v0.0.0
 2. Install [Node.js](http://nodejs.org)
 3. Navigate to the project folder and install Node modules
 
