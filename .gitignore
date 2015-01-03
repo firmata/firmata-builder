@@ -1,5 +1,3 @@
 .DS_Store
 
-resources
-TestFirmata.ino
-experimental.js
+*.ino
