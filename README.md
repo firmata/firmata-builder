@@ -3,7 +3,7 @@ Firmata Builder
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The beginnings of a utility to generate an Arduino sketch (.ino) file from a selection of Firmata features.
+The beginnings of a module to generate an Arduino sketch (.ino) file from a selection of Firmata features.
 
 At this point this project is still just a simple prototype. Lots more to do here...
 
@@ -50,6 +50,8 @@ wider range of users and the number of options could be tedious in the cli appro
 considering all 3 approaches above will help in making the Firmata Builder core more scalable.
 
 The next steps are:
+- Finialize builder module structure and add tests
+- Determine scalable approach for managing feature data (currently lib/features.js)
 - Secure web hosting space for firmatabuilder.com (domain has been purchased)
 - Server side code for generating the .ino file (builder.js is a prototype for generating the file)
 - Client side code for the feature selection UI
@@ -61,7 +63,7 @@ Contributing
 ===
 
 I'm looking for contributers, especially for server-side nodeJS develpment and in figuring out
-how to make what is currently builder.js something that can scale well to support
+how to make what is currently builder.js and features.js something that can scale well to support
 contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous) and/or [join the gitter](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).
 
 Also if anyone has hosting space to donate that would be greatly appreciated.
