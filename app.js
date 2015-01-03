@@ -14,7 +14,8 @@ var featureList = [
     "OneWireFirmata",
     "StepperFirmata",
     "FirmataExt",
-    "FirmataScheduler"
+    "FirmataScheduler",
+    "EncoderFirmata"
 ];
 
 
@@ -31,6 +32,7 @@ var i2cEnabled = false;
 var firmataExtEnabled = false;
 var schedulerEnabled = false;
 var stepperEnabled = false;
+var encoderEnabled = false;
 
 var allFeatures = {
     "DigitalInputFirmata": {
@@ -94,6 +96,11 @@ var allFeatures = {
         path: "utility/",
         className: "FirmataScheduler",
         instance: "scheduler"
+    },
+    "EncoderFirmata": {
+        path: "utility/",
+        className: "EncoderFirmata",
+        instance: "encoder"
     }
 };
 
@@ -126,6 +133,9 @@ function setEnabledFeatures() {
             break;
         case "StepperFirmata":
             stepperEnabled = true;
+            break;
+        case "EncoderFirmata":
+            encoderEnabled = true;
             break;
         }
     }
@@ -162,7 +172,7 @@ function addPostDependencies() {
         includes += "#include <utility/AnalogWrite.h>";
         includes += "\n\n";
     }
-    if (analogInputEnabled || i2cEnabled) {
+    if (analogInputEnabled || i2cEnabled || encoderEnabled) {
         includes += "#include <utility/FirmataReporting.h>\n";
         includes += "FirmataReporting reporting;";
         includes += "\n\n";
@@ -215,11 +225,10 @@ function addSetupFn() {
             if (feature.className !== "FirmataExt") {
                 fn += "  firmataExt.addFeature(" + feature.instance + ");\n";
             }
-        }        
-    }
-
-    if (reportingEnabled) {
-        fn += "  firmataExt.addFeature(reporting);\n\n";
+        }
+        if (reportingEnabled) {
+            fn += "  firmataExt.addFeature(reporting);\n\n";
+        }
     }
 
     fn += "  Firmata.attach(SYSTEM_RESET, systemResetCallback);\n\n";
@@ -263,6 +272,9 @@ function addLoopFn() {
         }
         if (i2cEnabled) {
             fn += "    i2c.report();\n";
+        }
+        if (encoderEnabled) {
+            fn += "    encoder.report();\n";
         }
 
         fn += "  }\n\n";
