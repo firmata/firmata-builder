@@ -29,7 +29,7 @@ var simulatedUserInput = {
   ]
 };
 
-var filename = simulatedUserInput.filename;
+var filename = simulatedUserInput.filename || "ConfiguredFirmata";
 var outputText = builder.build(simulatedUserInput);
 
 // remove the output directory if it exists (implicit)
