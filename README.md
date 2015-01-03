@@ -58,6 +58,6 @@ Contributing
 
 I'm looking for contributers, especially for server-side nodeJS develpment and in figuring out
 how to make what is currently builder.js something that can scale well to support
-contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous).
+contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous) and/or [join the gitter](https://gitter.im/firmata/FirmataBuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).
 
 Also if anyone has hosting space to donate that would be greatly appreciated.
