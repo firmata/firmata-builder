@@ -7,6 +7,7 @@
     "name": "Jeff Hoefs <soundanalogous@gmail.com>",
     "email": "soundanalogous@gmail.com"
   },
+  "contributors": [],
   "keywords": [
     "firmata",
     "arduino"
@@ -18,14 +19,15 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/rwldrn/johnny-five/blob/master/LICENSE-MIT"
+      "url": "https://github.com/firmata/firmata-builder/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "demo.js",
+  "main": "lib/builder.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "rimraf": "^2.2.8"
+  },
+  "devDependencies": {
   }
 }

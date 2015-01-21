@@ -18,15 +18,17 @@ To run the prototype in its current state:
     $ npm install
     ```
 
-4. Run the following command:
+4. Navigate to the `examples` directory and run the following command:
 
     ```bash
     $ node demo.js
     ```
 
-    An *output* directory will be generated.
+    An file named *ConfiguredFirmata.ino* will be generated in the same directory.
 
-5. Copy the contents of the *output* directory to your Arduino sketch folder, open the *ConfiguredFirmata.ino* file in the Arduino IDE, compile and upload.
+5. Move ConfiguredFirmata.ino to your Arduino sketch folder, open ConfiguredFirmata.ino in the Arduino IDE and accept the prompt to move ConfiguredFirmata.ino into a ConfiguredFirmata sketch folder.
+
+6. Compile and upload ConfiguredFirmata for your particular Arduino board.
 
 Goals
 ===

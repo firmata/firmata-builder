@@ -1,4 +1,5 @@
 .DS_Store
 
+*.ino
+examples/*.ino
 node_modules/
-output/
