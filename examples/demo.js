@@ -1,5 +1,4 @@
 var fs = require('fs');
-var path = require('path');
 
 var builder = require('../lib/builder.js');
 
@@ -25,8 +24,7 @@ var simulatedUserInput = {
   ]
 };
 
-var filename = simulatedUserInput.filename || "ConfiguredFirmata";
 var outputText = builder.build(simulatedUserInput);
 
-// write the Arduino .ino file
-fs.writeFileSync(filename + '.ino', outputText);
+// write the Arduino skech (.ino) file
+fs.writeFileSync(simulatedUserInput.filename + '.ino', outputText);
