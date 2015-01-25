@@ -52,11 +52,9 @@ wider range of users and the number of options could be tedious in the cli appro
 considering all 3 approaches above will help in making the Firmata Builder core more scalable.
 
 The next steps are:
-- Finialize builder module structure and add tests
 - Determine scalable approach for managing feature data (currently lib/features.js)
 - Secure web hosting space for firmatabuilder.com (domain has been purchased)
-- Server side code for generating the .ino file (builder.js is a prototype for generating the file)
-- Client side code for the feature selection UI
+- Develop firmatabuilder.com
 
 This repository is for the development of the firmata-builder module. A separate repo is likely
 necessary for the web application (firmatabuilder.com).
