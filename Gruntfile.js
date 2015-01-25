@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         eqnull: true,
         node: true,
         strict: false,
-        esnext: true,
+        mocha: true,
         globals: {
           exports: true
         }
@@ -26,15 +26,31 @@ module.exports = function(grunt) {
         src: [
           'Gruntfile.js',
           'lib/**/*.js',
+          'test/**/*.js',
           'examples/**/*.js'
         ]
+      }
+    },
+
+    mochacli: {
+      spec: {
+        options: {
+          reporter: 'spec'
+        }
+      },
+      nyan: {
+        options: {
+          reporter: 'nyan'
+        }
       }
     }
 
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-mocha-cli');
 
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('test', ['mochacli:spec']);
+  grunt.registerTask('default', ['jshint', 'mochacli:nyan']);
 
 };
