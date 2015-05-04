@@ -14,7 +14,9 @@ describe('builder.js', function () {
       "DigitalInputFirmata",
       "DigitalOutputFirmata",
       "AnalogInputFirmata",
-      "AnalogOutputFirmata"
+      "AnalogOutputFirmata",
+      "ServoFirmata",
+      "I2CFirmata"
     ]
   };
 
@@ -27,7 +29,7 @@ describe('builder.js', function () {
     builder.featuresWithUpdate = [];
     builder.updateEnabled = false;
     builder.reportingEnabled = false;
-    builder.systemDependencies = {};
+    builder.dependencies = {};
   });
 
   describe('#build() - input', function () {
@@ -152,17 +154,14 @@ describe('builder.js', function () {
       var features = builder.allFeatures;
       var fakeFeatures = {
         "AnalogOutputFirmata": {
-          path: "utility/",
           className: "AnalogOutputFirmata",
           instanceName: "analogOutput"
         },
         "ServoFirmata": {
-          path: "utility/",
           className: "ServoFirmata",
           instanceName: "servo",
-          systemDependencies: [
+          dependencies: [
             {
-              path: "",
               className: "Servo"
             }
           ]
@@ -176,6 +175,8 @@ describe('builder.js', function () {
       };
       builder.build(data);
 
+      // clear dependencies that were added in call to build
+      builder.dependencies = {};
       // temporairly use fake feature list
       builder.allFeatures = fakeFeatures;
       var text = builder.createIncludes();
@@ -294,8 +295,7 @@ describe('builder.js', function () {
         "DigitalOutputFirmata",
         "AnalogInputFirmata",
         "I2CFirmata",
-        "StepperFirmata",
-        "EncoderFirmata"
+        "StepperFirmata"
       ]
     };
     builder.build(data);
@@ -304,7 +304,6 @@ describe('builder.js', function () {
     it('should call report() on each feature with reporting', function () {
       expect(text).to.have.string('analogInput.report()');
       expect(text).to.have.string('i2c.report()');
-      expect(text).to.have.string('encoder.report()');
     });
 
     it('should call update() on each feature with updating', function () {
@@ -330,7 +329,7 @@ describe('builder.js', function () {
       // preceding tests should have ensured that each method
       // produced expected outputs. The following set ensures
       // various parts of the file were assembled properly.
-      expect(text).to.have.string('Firmata.h');
+      expect(text).to.have.string('ConfigurableFirmata.h');
       expect(text).to.have.string('Servo.h');
       expect(text).to.have.string('Wire.h');
       expect(text).to.have.string('FirmataExt.h');

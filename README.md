@@ -9,7 +9,7 @@ At this point this project is still just a simple prototype. Lots more to do her
 
 To run the prototype in its current state:
 
-1. Install the [configurable version of Firmata](https://github.com/firmata/arduino/tree/configurable) in the Arduino IDE: https://github.com/firmata/firmata-builder/releases/tag/v0.0.0
+1. Install [ConfigurableFirmata](https://github.com/firmata/ConfigurableFirmata)
 2. Install [Node.js](http://nodejs.org)
 3. Navigate to the project folder and install Node modules
 
@@ -53,11 +53,10 @@ considering all 3 approaches above will help in making the Firmata Builder core 
 
 The next steps are:
 - Determine scalable approach for managing feature data (currently lib/features.js)
-- Secure web hosting space for firmatabuilder.com (domain has been purchased)
 - Develop firmatabuilder.com
 
-This repository is for the development of the firmata-builder module. A separate repo is likely
-necessary for the web application (firmatabuilder.com).
+This repository is for the development of the firmata-builder module. A separate repo will be created
+for the web application (firmatabuilder.com).
 
 Contributing
 ===
@@ -65,5 +64,3 @@ Contributing
 I'm looking for contributers, especially for server-side nodeJS develpment and in figuring out
 how to make what is currently builder.js and features.js something that can scale well to support
 contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous) and/or [join the gitter](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).
-
-Also if anyone has hosting space to donate that would be greatly appreciated.

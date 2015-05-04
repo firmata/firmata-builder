@@ -19,8 +19,7 @@ var simulatedUserInput = {
     "I2CFirmata",
     "OneWireFirmata",
     "StepperFirmata",
-    "FirmataScheduler",
-    "EncoderFirmata"
+    "FirmataScheduler"
   ]
 };
 
