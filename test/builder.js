@@ -25,11 +25,6 @@ describe('builder.js', function () {
     builder.filename = undefined;
     builder.connectionType = undefined;
     builder.selectedFeatures = undefined;
-    builder.featuresWithReporting = [];
-    builder.featuresWithUpdate = [];
-    builder.updateEnabled = false;
-    builder.reportingEnabled = false;
-    builder.dependencies = {};
   });
 
   describe('#build() - input', function () {
@@ -105,10 +100,6 @@ describe('builder.js', function () {
 
     afterEach(function () {
       builder.selectedFeatures = undefined;
-      builder.featuresWithReporting = [];
-      builder.featuresWithUpdate = [];
-      builder.updateEnabled = false;
-      builder.reportingEnabled = false;
     });
 
     it('should set reportingEnabled if feature in set supports it', function () {

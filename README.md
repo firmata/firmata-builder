@@ -35,7 +35,7 @@ Goals
 
 The goal of Firmata Builder is to make it easy to create a custom Firmata sketch that provides
 only the features needed for a particular application. Limiting your sketch to
-only the featurs you need (vs the all in one StandardFirmata approach) will make
+only the features you need (vs the all in one StandardFirmata approach) will make
 your application more efficient (since the microcontroller doesn't have to waste precious clock
 cycles on unused features). Most importantly, it opens the door to offer a larger selection of features.
 With Firmata Builder a user will be able to make a selection of features and an Arduino Firmata
