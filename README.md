@@ -3,11 +3,9 @@ Firmata Builder
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The beginnings of a module to generate an Arduino sketch (.ino) file from a selection of Firmata features.
+A module to generate an Arduino sketch (.ino) file from a selection of Firmata features. It is currently used by [firmatabuilder.com](http://firmatabuilder.com). However, because it is modular it could also be wraped to create a cli utility or even used in an IDE.
 
-At this point this project is still just a simple prototype. Lots more to do here...
-
-To run the prototype in its current state:
+To use:
 
 1. Install [ConfigurableFirmata](https://github.com/firmata/ConfigurableFirmata)
 2. Install [Node.js](http://nodejs.org)
@@ -24,9 +22,9 @@ To run the prototype in its current state:
     $ node demo.js
     ```
 
-    An file named *ConfiguredFirmata.ino* will be generated in the same directory.
+    A file named *ConfiguredFirmata.ino* will be generated in the same directory.
 
-5. Move ConfiguredFirmata.ino to your Arduino sketch folder, open ConfiguredFirmata.ino in the Arduino IDE and accept the prompt to move ConfiguredFirmata.ino into a ConfiguredFirmata sketch folder.
+5. Open ConfiguredFirmata.ino in the Arduino IDE and accept the prompt to move ConfiguredFirmata.ino into a ConfiguredFirmata sketch folder.
 
 6. Compile and upload ConfiguredFirmata for your particular Arduino board.
 
@@ -37,30 +35,13 @@ The goal of Firmata Builder is to make it easy to create a custom Firmata sketch
 only the features needed for a particular application. Limiting your sketch to
 only the features you need (vs the all in one StandardFirmata approach) will make
 your application more efficient (since the microcontroller doesn't have to waste precious clock
-cycles on unused features). Most importantly, it opens the door to offer a larger selection of features.
-With Firmata Builder a user will be able to make a selection of features and an Arduino Firmata
-sketch will be generated.
+cycles on unused features). Most importantly, it opens the door to offer a larger selection of features than can be offered with StandardFirmata.
 
-There are at least 3 different ways Firmata Builder could work:
-
-1. As a web application where the user selects features then downloads the generated .ino file.
-2. As a cli utility, something like [yeoman](http://yeoman.io/)
-3. As a module for use in projects such as IDEs (that may be tied to a specific Firmata client library)
-
-Either #1 or #2 above could be the minimum viable product. I think #1 will be easier for a
-wider range of users and the number of options could be tedious in the cli approach (#2). However,
-considering all 3 approaches above will help in making the Firmata Builder core more scalable.
-
-The next steps are:
-- Determine scalable approach for managing feature data (currently lib/features.js)
-- Develop firmatabuilder.com
-
-This repository is for the development of the firmata-builder module. A separate repo will be created
-for the web application (firmatabuilder.com).
+Currently you can only generate sketchs that use a Serial transport. In a future version you will also
+be able to generate sketches that can connect via Ethernet or Wi-Fi. If you need Ethernet before then,
+you can use the [ConfigurableFirmata.ino sketch](https://github.com/firmata/ConfigurableFirmata/blob/master/examples/ConfigurableFirmata/ConfigurableFirmata.ino) included with the ConfigurableFirmata library and follow the instructions in the file to enable ethernat and configure your network settings.
 
 Contributing
 ===
 
-I'm looking for contributers, especially for server-side nodeJS develpment and in figuring out
-how to make what is currently builder.js and features.js something that can scale well to support
-contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous) and/or [join the gitter](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).
+I'm looking for contributers, especially in figuring out how to make what is currently builder.js and features.js something that can scale well to support contributed Firmata features. If you want to get involved, [contact me](https://github.com/soundanalogous) and/or [join the gitter](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).

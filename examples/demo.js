@@ -2,7 +2,7 @@ var fs = require('fs');
 
 var builder = require('../lib/builder.js');
 
-// builder.build expects and object with this structure
+// builder.build expects an object with this structure
 var simulatedUserInput = {
   filename: "ConfiguredFirmata",
   connectionType: {
@@ -19,6 +19,7 @@ var simulatedUserInput = {
     "I2CFirmata",
     "OneWireFirmata",
     "StepperFirmata",
+    "SerialFirmata",
     "FirmataScheduler"
   ]
 };

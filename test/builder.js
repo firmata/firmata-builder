@@ -259,10 +259,6 @@ describe('builder.js', function () {
     builder.build(fakeData);
     var text = builder.createSetupFn();
 
-    it('should attach ANALOG_MESSAGE if analog output or servo enabled', function () {
-      expect(text).to.have.string('ANALOG_MESSAGE');
-    });
-
     it('should add each selected feature to firmataExt', function () {
       expect(text).to.have.string('firmataExt.addFeature(digitalInput)');
       expect(text).to.have.string('firmataExt.addFeature(digitalOutput)');
