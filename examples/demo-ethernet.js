@@ -4,10 +4,15 @@ var builder = require("../lib/builder.js");
 
 // builder.build expects an object with this structure
 var simulatedUserInput = {
-  filename: "ConfiguredFirmata",
+  filename: "ConfiguredFirmataEthernet",
   connectionType: {
-    serial: {
-      baud: 57600
+    ethernet: {
+      controller: "Arduino Ethernet Shield", // "WIZ5100", ENC28J60", "Arduino Yun"
+      remoteIp: "192.168.0.1",
+      //localIp: "192.168.0.6",
+      //remoteHost: "server.local"
+      remotePort: 3030,
+      mac: "90:A2:DA:0D:07:02"
     }
   },
   selectedFeatures: [
@@ -17,10 +22,10 @@ var simulatedUserInput = {
     "AnalogOutputFirmata",
     "ServoFirmata",
     "I2CFirmata",
-    "OneWireFirmata",
-    "StepperFirmata",
-    "SerialFirmata",
-    "FirmataScheduler"
+    //"OneWireFirmata",
+    //"StepperFirmata",
+    //"SerialFirmata",
+    //"FirmataScheduler"
   ]
 };
 

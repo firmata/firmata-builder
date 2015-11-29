@@ -16,13 +16,17 @@ To use:
     $ npm install
     ```
 
-4. Navigate to the `examples` directory and run the following command:
+4. Navigate to the `examples` directory and run either of the following command:
 
     ```bash
     $ node demo.js
     ```
 
-    A file named *ConfiguredFirmata.ino* will be generated in the same directory.
+    ```bash
+    $ node demo-ethernet.js
+    ```
+
+    The first command above will generate a file named *ConfiguredFirmata.ino* and the second will generate a file named *ConfiguredFirmataEthernet* in the same directory. These examples also demonstrate the format of the object to be passed into the `build` method.
 
 5. Open ConfiguredFirmata.ino in the Arduino IDE and accept the prompt to move ConfiguredFirmata.ino into a ConfiguredFirmata sketch folder.
 
@@ -31,15 +35,7 @@ To use:
 Goals
 ===
 
-The goal of Firmata Builder is to make it easy to create a custom Firmata sketch that provides
-only the features needed for a particular application. Limiting your sketch to
-only the features you need (vs the all in one StandardFirmata approach) will make
-your application more efficient (since the microcontroller doesn't have to waste precious clock
-cycles on unused features). Most importantly, it opens the door to offer a larger selection of features than can be offered with StandardFirmata.
-
-Currently you can only generate sketchs that use a Serial transport. In a future version you will also
-be able to generate sketches that can connect via Ethernet or Wi-Fi. If you need Ethernet before then,
-you can use the [ConfigurableFirmata.ino sketch](https://github.com/firmata/ConfigurableFirmata/blob/master/examples/ConfigurableFirmata/ConfigurableFirmata.ino) included with the ConfigurableFirmata library and follow the instructions in the file to enable ethernat and configure your network settings.
+Firmata Builder opens the door to offer a larger selection of features than can be offered with the all-in-one [StandardFirmata](https://github.com/firmata/arduino/blob/master/examples/StandardFirmata/StandardFirmata.ino) approach. You can include as many or as few features as your application needs (within the constraints of the board you are using). It is also possible to wrap existing Arduino libraries to use them as Firmata features. See [FirmataEncoder](https://github.com/firmata/FirmataEncoder) for an example. This makes it much easier to mix custom features with standard features (digital and analog I/O, I2C, etc).
 
 Contributing
 ===
