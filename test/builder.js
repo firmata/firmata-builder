@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var expect = require('chai').expect;
 var builder = require('../lib/builder.js');
 
@@ -8,6 +9,28 @@ describe('builder.js', function () {
     connectionType: {
       serial: {
         baud: 57600
+      }
+    },
+    selectedFeatures: [
+      "DigitalInputFirmata",
+      "DigitalOutputFirmata",
+      "AnalogInputFirmata",
+      "AnalogOutputFirmata",
+      "ServoFirmata",
+      "I2CFirmata"
+    ]
+  };
+
+  var fakeDataEthernet = {
+    filename: "TextFirmata",
+    connectionType: {
+      ethernet: {
+        controller: "WIZ5100",
+        remoteIp: "192.168.0.1",
+        remotePort: 3030,
+        remoteHost: "",
+        localIp: "",
+        mac: "90:A2:DA:0D:07:02"
       }
     },
     selectedFeatures: [
@@ -41,20 +64,23 @@ describe('builder.js', function () {
       builder.selectedFeatures = undefined;
     });
 
-    it('should return undefined if called with no params', function () {
-      expect(builder.build()).to.be.empty();
-    });
-
-    it('should return undefined if selectedFeatures is undefined', function () {
-      var data = {};
-      expect(builder.build(data)).to.be.empty();
-    });
-
-    it('should return undefined if no selectedFeatures are defined', function () {
-      var data = {
-        selectedFeatures: []
+    it('should throw an error if no options parameter is passed', function () {
+      var fn = function () {
+        builder.build();
       };
-      expect(builder.build(data)).to.be.empty();
+      expect(fn).to.throw(Error);
+    });
+
+    it('should throw an error if no selected features are defined', function () {
+      var fn = function () {
+        var opts = {
+          filename: "test",
+          connectionType: {serial: {baud: 57600}},
+          selectedFeatures: []
+        };
+        builder.build(opts);
+      };
+      expect(fn).to.throw(Error);
     });
 
     it('should set default filename', function () {
@@ -70,6 +96,90 @@ describe('builder.js', function () {
     it('should set default baud', function () {
       builder.build(fakeDataDefaults);
       expect(builder.connectionType.serial.baud).to.equal(57600);
+    });
+
+  });
+
+  describe('#createEthernetConfig()', function () {
+
+    it('should throw an error if no ethernet controller is specified', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.controller = "";
+      var fn = function () {
+        builder.build(data);
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it('should throw an error if no remoteIP or remoteHost is specified', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.remoteIp = "";
+      var fn = function () {
+        builder.build(data);
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it('should throw an error if no remotePort is specified', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.remotePort = "";
+      var fn = function () {
+        builder.build(data);
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it('should throw an error if a MAC address is improperly formatted', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      // TODO - this should be more flexible since dashes should be made to pass
+      data.connectionType.ethernet.mac = "90-A2-DA-0D-07-02";
+      var fn = function () {
+        builder.build(data);
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it('should throw an error if an IP address is improperly formatted', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.remoteIp = "192,168,0,1";
+      var fn = function () {
+        builder.build(data);
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it('should declare only a remoteIp or remoteHost', function () {
+      builder.build(fakeDataEthernet);
+      var text = builder.createEthernetConfig();
+      expect(text).to.have.string('IPAddress remoteIp');
+      expect(text).to.not.have.string('#define REMOTE_HOST');
+    });
+
+    it('should include the proper files for a WIZ5100 controller', function () {
+      builder.build(fakeDataEthernet);
+      var text = builder.createEthernetConfig();
+      expect(text).to.have.string('<SPI.h>');
+      expect(text).to.have.string('<Ethernet.h>');
+      expect(text).to.have.string('EthernetClient client');
+    });
+
+    it('should include the proper files for an ENC28J60 controller', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.controller = 'ENC28J60';
+      builder.build(data);
+      var text = builder.createEthernetConfig();
+      expect(text).to.have.string('<UIPEthernet.h>');
+      expect(text).to.have.string('EthernetClient client');
+    });
+
+    it('should include the proper files for an Arduino Yun controller', function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.controller = 'Arduino Yun';
+      builder.build(data);
+      var text = builder.createEthernetConfig();
+      expect(text).to.have.string('<Bridge.h>');
+      expect(text).to.have.string('<YunClient.h>');
+      expect(text).to.have.string('YunClient client');
     });
 
   });
@@ -178,6 +288,15 @@ describe('builder.js', function () {
       // restore original features
       builder.allFeatures = features;
     });
+
+    it('should include the ethernet config if ethernet', function () {
+      builder.build(fakeDataEthernet);
+      var text = builder.createIncludes();
+      expect(text).to.have.string('<Ethernet.h>');
+      expect(text).to.have.string('<EthernetClientStream.h>');
+      expect(text).to.have.string('EthernetClient client');
+      expect(text).to.have.string('EthernetClientStream stream');
+    });
   });
 
   describe('#createPostDependencies()', function () {
@@ -275,6 +394,32 @@ describe('builder.js', function () {
     });
   });
 
+  describe('#createSetupFn() - serial', function () {
+    builder.build(fakeData);
+    var text = builder.createSetupFn();
+
+    it('should specify correct baud if connectionType is serial', function () {
+      expect(text).to.have.string('begin(57600)');
+    });
+  });
+
+  describe('#createSetupFn() - ethernet', function () {
+    builder.build(fakeDataEthernet);
+    var text = builder.createSetupFn();
+
+    it('should call build on correct object if connectionType is ethernet', function () {
+      expect(text).to.have.string('Ethernet.begin');
+    });
+
+    it('should pass the ethernet stream to Firmata.begin', function () {
+      expect(text).to.have.string('Firmata.begin(stream)');
+    });
+
+    it('should define pins to be ignored', function () {
+      expect(text).to.have.string('Firmata.setPinMode(i, PIN_MODE_IGNORE)');
+    });
+  });
+
   describe('#createLoopFn()', function () {
     var data = {
       selectedFeatures: [
@@ -325,6 +470,11 @@ describe('builder.js', function () {
       expect(text).to.have.string('loop()');
 
       expect(text).to.have.string(fakeData.selectedFeatures[0] + '.h');
+    });
+
+    it('should manage maintaining the ethernet connection', function () {
+      var text = builder.build(fakeDataEthernet);
+      expect(text).to.have.string('stream.maintain');
     });
   });
 
