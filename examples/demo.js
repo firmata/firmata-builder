@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-var builder = require("../lib/builder.js");
+var builder = require("../lib/builder.js").builder;
 
 // builder.build expects an object with this structure
 var simulatedUserInput = {

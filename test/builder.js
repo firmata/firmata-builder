@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var expect = require("chai").expect;
-var builder = require("../lib/builder.js");
+var builder = require("../lib/builder.js").builder;
 
 describe("builder.js", function () {
 
