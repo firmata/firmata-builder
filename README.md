@@ -9,11 +9,19 @@ To use:
 
 1. Install [ConfigurableFirmata](https://github.com/firmata/ConfigurableFirmata)
 2. Install [Node.js](http://nodejs.org)
-3. Navigate to the project folder and install Node modules
+3. Install from source or install the firmata-builder npm module
+
+    #### source code:
 
     ```bash
-    $ cd firmata-builder
+    $ git clone git@github.com:firmata/firmata-builder.git && cd firmata-builder
     $ npm install
+    ```
+
+    #### npm package:
+
+    ```bash
+    $ npm install firmata-builder
     ```
 
 4. Navigate to the `examples` directory and run either of the following command:
