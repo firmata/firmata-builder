@@ -11,14 +11,14 @@ To use:
 2. Install [Node.js](http://nodejs.org)
 3. Install from source or install the firmata-builder npm module
 
-    #### source code:
+    **source code:**
 
     ```bash
     $ git clone git@github.com:firmata/firmata-builder.git && cd firmata-builder
     $ npm install
     ```
 
-    #### npm package:
+    **npm package:**
 
     ```bash
     $ npm install firmata-builder
