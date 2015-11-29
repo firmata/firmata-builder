@@ -1,6 +1,6 @@
-var fs = require('fs');
+var fs = require("fs");
 
-var builder = require('../lib/builder.js');
+var builder = require("../lib/builder.js");
 
 // builder.build expects an object with this structure
 var simulatedUserInput = {
@@ -27,4 +27,4 @@ var simulatedUserInput = {
 var outputText = builder.build(simulatedUserInput);
 
 // write the Arduino skech (.ino) file
-fs.writeFileSync(simulatedUserInput.filename + '.ino', outputText);
+fs.writeFileSync(simulatedUserInput.filename + ".ino", outputText);

@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON("package.json"),
 
     jshint: {
       options: {
@@ -23,34 +23,61 @@ module.exports = function(grunt) {
         }
       },
       files: {
-        src: [
-          'Gruntfile.js',
-          'lib/**/*.js',
-          'test/**/*.js',
-          'examples/**/*.js'
-        ]
+        src: ["Gruntfile.js", "lib/*.js", "test/*.js", "examples/*.js"]
+      }
+    },
+
+    jscs: {
+      files: {
+        src: ["Gruntfile.js", "lib/*.js", "test/*.js", "examples/*.js"]
+      },
+      options: {
+        config: ".jscsrc",
+        requireCurlyBraces: [
+          "if",
+          "else",
+          "for",
+          "while",
+          "do",
+          "try",
+          "catch",
+        ],
+        requireSpaceBeforeBlockStatements: true,
+        requireParenthesesAroundIIFE: true,
+        requireSpacesInConditionalExpression: true,
+        requireSpaceAfterKeywords: [
+          "if", "else",
+          "switch", "case",
+          "try", "catch",
+          "do", "while", "for",
+          "return", "typeof", "void",
+        ],
+        validateQuoteMarks: {
+          mark: "\"",
+          escape: true
+        }
       }
     },
 
     mochacli: {
       spec: {
         options: {
-          reporter: 'spec'
+          reporter: "spec"
         }
       },
       nyan: {
         options: {
-          reporter: 'nyan'
+          reporter: "nyan"
         }
       }
     }
 
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.registerTask("default", ["jshint", "jscs", "mochacli:nyan"]);
+  grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-mocha-cli");
+  grunt.loadNpmTasks("grunt-jscs");
 
-  grunt.registerTask('test', ['mochacli:spec']);
-  grunt.registerTask('default', ['jshint', 'mochacli:nyan']);
-
+  grunt.registerTask("test", ["mochacli:spec"]);
 };
