@@ -1,6 +1,9 @@
 var _ = require("lodash");
 var expect = require("chai").expect;
 var builder = require("../lib/builder.js").builder;
+// including only to check instance
+var SerialTransport = require("../lib/transports/serial.js");
+var EthernetTransport = require("../lib/transports/ethernet.js");
 
 describe("builder.js", function () {
 
@@ -98,88 +101,14 @@ describe("builder.js", function () {
       expect(builder.connectionType.serial.baud).to.equal(57600);
     });
 
-  });
-
-  describe("#createEthernetConfig()", function () {
-
-    it("should throw an error if no ethernet controller is specified", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.controller = "";
-      var fn = function () {
-        builder.build(data);
-      };
-      expect(fn).to.throw(Error);
+    it("should create a serial transport", function () {
+      builder.build(fakeDataDefaults);
+      expect(builder.transport).to.be.instanceof(SerialTransport);
     });
 
-    it("should throw an error if no remoteIP or remoteHost is specified", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.remoteIp = "";
-      var fn = function () {
-        builder.build(data);
-      };
-      expect(fn).to.throw(Error);
-    });
-
-    it("should throw an error if no remotePort is specified", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.remotePort = "";
-      var fn = function () {
-        builder.build(data);
-      };
-      expect(fn).to.throw(Error);
-    });
-
-    it("should throw an error if a MAC address is improperly formatted", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      // TODO - this should be more flexible since dashes should be made to pass
-      data.connectionType.ethernet.mac = "90-A2-DA-0D-07-02";
-      var fn = function () {
-        builder.build(data);
-      };
-      expect(fn).to.throw(Error);
-    });
-
-    it("should throw an error if an IP address is improperly formatted", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.remoteIp = "192,168,0,1";
-      var fn = function () {
-        builder.build(data);
-      };
-      expect(fn).to.throw(Error);
-    });
-
-    it("should declare only a remoteIp or remoteHost", function () {
+    it("should create an enternet transport", function () {
       builder.build(fakeDataEthernet);
-      var text = builder.createEthernetConfig();
-      expect(text).to.have.string("IPAddress remoteIp");
-      expect(text).to.not.have.string("#define REMOTE_HOST");
-    });
-
-    it("should include the proper files for a WIZ5100 controller", function () {
-      builder.build(fakeDataEthernet);
-      var text = builder.createEthernetConfig();
-      expect(text).to.have.string("<SPI.h>");
-      expect(text).to.have.string("<Ethernet.h>");
-      expect(text).to.have.string("EthernetClient client");
-    });
-
-    it("should include the proper files for an ENC28J60 controller", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.controller = "ENC28J60";
-      builder.build(data);
-      var text = builder.createEthernetConfig();
-      expect(text).to.have.string("<UIPEthernet.h>");
-      expect(text).to.have.string("EthernetClient client");
-    });
-
-    it("should include the proper files for an Arduino Yun controller", function () {
-      var data = _.clone(fakeDataEthernet, true);
-      data.connectionType.ethernet.controller = "Arduino Yun";
-      builder.build(data);
-      var text = builder.createEthernetConfig();
-      expect(text).to.have.string("<Bridge.h>");
-      expect(text).to.have.string("<YunClient.h>");
-      expect(text).to.have.string("YunClient client");
+      expect(builder.transport).to.be.instanceof(EthernetTransport);
     });
 
   });
