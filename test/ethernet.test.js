@@ -5,7 +5,7 @@ var EthernetTransport = require("../lib/transports/ethernet.js");
 describe("ethernet.js", function () {
 
   var fakeDataEthernet = {
-    filename: "TextFirmata",
+    filename: "TestFirmata",
     connectionType: {
       ethernet: {
         controller: "WIZ5100",
@@ -31,6 +31,15 @@ describe("ethernet.js", function () {
     it("should throw an error if no ethernet controller is specified", function () {
       var data = _.clone(fakeDataEthernet, true);
       data.connectionType.ethernet.controller = "";
+      var fn = function () {
+        new EthernetTransport({configuration: data.connectionType.ethernet});
+      };
+      expect(fn).to.throw(Error);
+    });
+
+    it("should throw an error if an invalid ethernet controller is specified", function () {
+      var data = _.clone(fakeDataEthernet, true);
+      data.connectionType.ethernet.controller = "INVALID_CONTROLLER";
       var fn = function () {
         new EthernetTransport({configuration: data.connectionType.ethernet});
       };
@@ -112,7 +121,66 @@ describe("ethernet.js", function () {
       expect(text).to.have.string("<YunClient.h>");
       expect(text).to.have.string("YunClient client");
     });
+  });
 
+  describe("createInitBlock", function () {
+    var data;
+    var transport;
+
+    beforeEach(function () {
+      data = _.clone(fakeDataEthernet, true);
+      transport = new EthernetTransport({configuration: data.connectionType.ethernet});
+    });
+
+    it("should call Bridge.begin if Arduino Yun", function () {
+      transport.controller = "Arduino Yun";
+      var text = transport.createInitBlock();
+      expect(text).to.have.string("Bridge.begin()");
+    });
+
+    it("should call Ethernet.begin with the appropriate parameters if localIp", function () {
+      transport.configuration.localIp = "192.168.0.10";
+      var text = transport.createInitBlock();
+      expect(text).to.have.string("Ethernet.begin((uint8_t *)mac, localIp)");
+    });
+
+    it("should call Ethernet.begin with the appropriate parameters if NOT localIp", function () {
+      var text = transport.createInitBlock();
+      expect(text).to.have.string("Ethernet.begin((uint8_t *)mac)");
+    });
+  });
+
+  describe("createPinIgnoreBlock", function () {
+    var data;
+    var transport;
+
+    beforeEach(function () {
+      data = _.clone(fakeDataEthernet, true);
+      transport = new EthernetTransport({configuration: data.connectionType.ethernet});
+    });
+
+    it("should call Firmata.setPinMode if controller is WIZ5100", function () {
+      var text = transport.createPinIgnoreBlock();
+      expect(text).to.have.string("Firmata.setPinMode");
+    });
+
+    it("should call Firmata.setPinMode if controller is ENC28J60", function () {
+      transport.controller = "ENC28J60";
+      var text = transport.createPinIgnoreBlock();
+      expect(text).to.have.string("Firmata.setPinMode");
+    });
+
+    it("should return empty string if Arduino Yun", function () {
+      transport.controller = "Arduino Yun";
+      var text = transport.createPinIgnoreBlock();
+      expect(text).to.be.empty();
+    });
+
+    it("should set proper pin modes when using WIZ500", function () {
+      var text = transport.createPinIgnoreBlock();
+      expect(text).to.have.string("pinMode(PIN_TO_DIGITAL(4), OUTPUT)");
+      expect(text).to.have.string("pinMode(PIN_TO_DIGITAL(53), OUTPUT)");
+    });
   });
 
 });
