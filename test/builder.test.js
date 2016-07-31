@@ -322,10 +322,9 @@ describe("builder.js", function () {
     });
   });
 
-  describe("#createSetupFn()", function () {
+  describe("#createInitFirmataFn()", function () {
     builder.build(fakeData);
-    var spy = sinon.spy(builder.transport, "createInitBlock");
-    var text = builder.createSetupFn();
+    var text = builder.createInitFirmataFn();
 
     it("should add each selected feature to firmataExt", function () {
       expect(text).to.have.string("firmataExt.addFeature(digitalInput)");
@@ -338,13 +337,22 @@ describe("builder.js", function () {
       expect(text).to.have.string("firmataExt.addFeature(reporting)");
     });
 
-    it("should specify correct baud if connectionType is serial", function () {
-      expect(text).to.have.string("begin(57600)");
+  });
+
+  describe("#createSetupFn()", function () {
+    builder.build(fakeData);
+    var text = builder.createSetupFn();
+
+    it("should include call to initFirmata()", function () {
+      expect(text).to.have.string("initFirmata();");
     });
 
-    // ensure transport.createConfigBlock was called
-    it("should call transport.createInitBlock", function () {
-      expect(spy.calledOnce).to.equal(true);
+    it("should include call to initTransport()", function () {
+      expect(text).to.have.string("initTransport();");
+    });
+
+    it("should include call to systemResetCallback()", function () {
+      expect(text).to.have.string("systemResetCallback();");
     });
   });
 
@@ -361,16 +369,16 @@ describe("builder.js", function () {
     var spy = sinon.spy(builder.transport, "createLoopEndBlock");
     var text = builder.createLoopFn();
 
-    it("should call report() on each feature with reporting", function () {
+    it("should include call to report() on each feature with reporting", function () {
       expect(text).to.have.string("analogInput.report()");
       expect(text).to.have.string("i2c.report()");
     });
 
-    it("should call update() on each feature with updating", function () {
+    it("should include call to update() on each feature with updating", function () {
       expect(text).to.have.string("stepper.update()");
     });
 
-    it("should call transport.createLoopEndBlock", function () {
+    it("should include call to transport.createLoopEndBlock", function () {
       expect(spy.calledOnce).to.equal(true);
       expect(text).to.have.string("stream.maintain");
     });
@@ -399,11 +407,29 @@ describe("builder.js", function () {
       expect(text).to.have.string("Wire.h");
       expect(text).to.have.string("FirmataExt.h");
       expect(text).to.have.string("systemResetCallback()");
+      expect(text).to.have.string("initTransport()");
+      expect(text).to.have.string("initFirmata()");
       expect(text).to.have.string("setup()");
       expect(text).to.have.string("loop()");
 
       expect(text).to.have.string(fakeData.selectedFeatures[0] + ".h");
     });
+
+    it("should include call to Firmata.begin() with the baud rate if Serial transport", function () {
+      var text = builder.build(fakeData);
+      expect(text).to.have.string("Firmata.begin(57600)");
+    });
+
+    it("should include call to ignorePins() if Wi-Fi and pins should be ignored", function () {
+      var text = builder.build(fakeDataWiFi);
+      expect(text).to.have.string("ignorePins()");
+    });
+
+    it("should include call to ignorePins() if Ethernet and pins should be ignored", function () {
+      var text = builder.build(fakeDataEthernet);
+      expect(text).to.have.string("ignorePins()");
+    });
+
   });
 
 });

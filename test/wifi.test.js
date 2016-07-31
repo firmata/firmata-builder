@@ -185,40 +185,7 @@ describe("wifi.js", function () {
 
   });
 
-  describe("createInitBlock", function () {
-    var data;
-    var transport;
-
-    beforeEach(function () {
-      data = _.clone(fakeDataWiFiShield101WPA, true);
-      transport = new WiFiTransport({configuration: data.connectionType.wifi});
-    });
-
-    it("should pass local_ip to stream.config if localIp is specified", function () {
-      var text = transport.createInitBlock();
-      expect(text).to.have.string("stream.config(local_ip)");
-    });
-
-    it("should call stream.begin with the appropriate parameters for WPA", function () {
-      var text = transport.createInitBlock();
-      expect(text).to.have.string("stream.begin(ssid, wpa_passphrase, SERVER_PORT)");
-    });
-
-    it("should call stream.begin with the appropriate parameters for WEP", function () {
-      transport = new WiFiTransport({configuration: fakeDataWiFiShieldWEP.connectionType.wifi});
-      var text = transport.createInitBlock();
-      expect(text).to.have.string("stream.begin(ssid, wep_index, wep_key, SERVER_PORT)");
-    });
-
-    it("should call stream.begin with the appropriate parameters for open security", function () {
-      transport = new WiFiTransport({configuration: fakeDataWiFiMKR1000Open.connectionType.wifi});
-      var text = transport.createInitBlock();
-      expect(text).to.have.string("stream.begin(ssid, SERVER_PORT)");
-    });
-
-  });
-
-  describe("createPinIgnoreBlock", function () {
+  describe("#createIgnorePinsFn", function () {
     var data;
     var transport;
 
@@ -228,29 +195,72 @@ describe("wifi.js", function () {
     });
 
     it("should use the proper pin ignore macro based on the controller type", function () {
-      var text = transport.createPinIgnoreBlock();
+      var text = transport.createIgnorePinsFn();
       expect(text).to.have.string("IS_IGNORE_WIFI101_SHIELD");
 
       transport = new WiFiTransport({configuration: fakeDataWiFiMKR1000Open.connectionType.wifi});
-      text = transport.createPinIgnoreBlock();
+      text = transport.createIgnorePinsFn();
       expect(text).to.have.string("IS_IGNORE_WIFI101_SHIELD");
 
       transport = new WiFiTransport({configuration: fakeDataWiFiShieldWEP.connectionType.wifi});
-      text = transport.createPinIgnoreBlock();
+      text = transport.createIgnorePinsFn();
       expect(text).to.have.string("IS_IGNORE_WIFI_SHIELD");
     });
 
-    it("should call Firmata.setPinMode", function () {
-      var text = transport.createPinIgnoreBlock();
+    it("should include call to Firmata.setPinMode", function () {
+      var text = transport.createIgnorePinsFn();
       expect(text).to.have.string("Firmata.setPinMode");
     });
 
     it("should set proper pin modes when using legacy WiFi Shield", function () {
       transport = new WiFiTransport({configuration: fakeDataWiFiShieldWEP.connectionType.wifi});
-      var text = transport.createPinIgnoreBlock();
+      var text = transport.createIgnorePinsFn();
       expect(text).to.have.string("pinMode(PIN_TO_DIGITAL(4), OUTPUT)");
       expect(text).to.have.string("pinMode(PIN_TO_DIGITAL(53), OUTPUT)");
     });
+  });
+
+  describe("#createInitTransportFn", function () {
+    var data;
+    var transport;
+
+    beforeEach(function () {
+      data = _.clone(fakeDataWiFiShield101WPA, true);
+      transport = new WiFiTransport({configuration: data.connectionType.wifi});
+    });
+
+    it("should pass local_ip to stream.config if localIp is specified", function () {
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("stream.config(local_ip)");
+    });
+
+    it("should include call to stream.begin with the appropriate parameters for WPA", function () {
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("stream.begin(ssid, wpa_passphrase, SERVER_PORT)");
+    });
+
+    it("should include call to stream.begin with the appropriate parameters for WEP", function () {
+      transport = new WiFiTransport({configuration: fakeDataWiFiShieldWEP.connectionType.wifi});
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("stream.begin(ssid, wep_index, wep_key, SERVER_PORT)");
+    });
+
+    it("should include call to stream.begin with the appropriate parameters for open security", function () {
+      transport = new WiFiTransport({configuration: fakeDataWiFiMKR1000Open.connectionType.wifi});
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("stream.begin(ssid, SERVER_PORT)");
+    });
+
+    it("should include call to ignorePins() if pins should be ignored", function () {
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("ignorePins();");
+    });
+
+    it("should include call to Firmata.begin(stream)", function () {
+      var text = transport.createInitTransportFn();
+      expect(text).to.have.string("Firmata.begin(stream);");
+    });
+
   });
 
 });
