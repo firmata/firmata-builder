@@ -7,8 +7,11 @@ var simulatedUserInput = {
   filename: "ConfiguredFirmataWiFi",
   connectionType: {
     wifi: {
-      controller: "WIFI_SHIELD_101", // "WIFI_SHIELD", "MRK1000"
-      localIp: "192.168.0.6",
+      controller: "MKR1000", // "WIFI_SHIELD_101", WIFI_SHIELD", "MKR1000", "ESP8266"
+      //localIp: "192.168.0.6",
+      //subnetMask: "255.255.255.0",
+      //gatewayIp: "0.0.0.0",
+      //serverIp: "192.168.0.1",
       remotePort: 3030,
       ssid: "your_network_name",
       securityType: {
