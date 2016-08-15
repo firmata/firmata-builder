@@ -6,19 +6,29 @@ var builder = require("../lib/builder.js").builder;
  * builder.build expects an object with this structure
  *
  * controllers:
- * "ETHERNET_SHIELD", "ETHERNET_BOARD", "WIZ5100", "ENC28J60", "YUN", "DFROBOT_XBOARD_V2",
- * "ETHERNET_SHIELD_W5100"
+ * "MKR1000", "ESP8266", "WIFI_SHIELD_101", WIFI_SHIELD"
  */
 var simulatedUserInput = {
-  filename: "ConfiguredFirmataEthernet",
+  filename: "ConfiguredFirmataWiFi",
   connectionType: {
-    ethernet: {
-      controller: "ETHERNET_SHIELD",
-      remoteIp: "192.168.0.1",
+    wifi: {
+      controller: "MKR1000",
       //localIp: "192.168.0.6",
-      //remoteHost: "server.local",
-      remotePort: 3030,
-      mac: "90:A2:DA:0D:07:02"
+      //subnetMask: "255.255.255.0",
+      //gatewayIp: "0.0.0.0",
+      //remoteServerIp: "192.168.0.1",
+      networkPort: 3030,
+      ssid: "your_network_name",
+      securityType: {
+        wpa: {
+          passphrase: "your_wpa_passphrase"
+        },
+        // wep: {
+        //   index: 0,
+        //   key: "your_wep_key"
+        // },
+        // none: "none"
+      }
     }
   },
   selectedFeatures: [

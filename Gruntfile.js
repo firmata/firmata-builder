@@ -23,13 +23,13 @@ module.exports = function(grunt) {
         }
       },
       files: {
-        src: ["Gruntfile.js", "lib/*.js", "test/*.js", "examples/*.js"]
+        src: ["Gruntfile.js", "lib/**/*.js", "test/*.js", "examples/*.js"]
       }
     },
 
     jscs: {
       files: {
-        src: ["Gruntfile.js", "lib/*.js", "test/*.js", "examples/*.js"]
+        src: ["Gruntfile.js", "lib/**/*.js", "test/*.js", "examples/*.js"]
       },
       options: {
         config: ".jscsrc",
