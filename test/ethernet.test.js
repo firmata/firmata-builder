@@ -114,7 +114,7 @@ describe("ethernet.js", function () {
 
     it("should include the proper files for an Arduino Yun controller", function () {
       var overrideData = data.connectionType.ethernet;
-      overrideData.controller = "Arduino Yun";
+      overrideData.controller = "YUN";
       transport = new EthernetTransport({configuration: overrideData});
       var text = transport.createConfigBlock();
       expect(text).to.have.string("<Bridge.h>");
@@ -138,13 +138,13 @@ describe("ethernet.js", function () {
     });
 
     it("should call Firmata.setPinMode if controller is ENC28J60", function () {
-      transport.controller = "ENC28J60";
+      transport.controller = EthernetTransport.controllers.ENC28J60;
       var text = transport.createIgnorePinsFn();
       expect(text).to.have.string("Firmata.setPinMode");
     });
 
     it("should return empty string if Arduino Yun", function () {
-      transport.controller = "Arduino Yun";
+      transport.controller = EthernetTransport.controllers.YUN;
       var text = transport.createIgnorePinsFn();
       expect(text).to.be.empty();
     });
@@ -166,7 +166,7 @@ describe("ethernet.js", function () {
     });
 
     it("should call Bridge.begin if Arduino Yun", function () {
-      transport.controller = "Arduino Yun";
+      transport.controller = EthernetTransport.controllers.YUN;
       var text = transport.createInitTransportFn();
       expect(text).to.have.string("Bridge.begin()");
     });

@@ -49,7 +49,7 @@ describe("builder.js", function () {
       wifi: {
         controller: "WIFI_SHIELD_101",
         localIp: "192.168.0.6",
-        remotePort: 3030,
+        networkPort: 3030,
         ssid: "your_network_name",
         securityType: {
           wpa: {

@@ -19,7 +19,7 @@ describe("wifi.js", function () {
       wifi: {
         controller: "WIFI_SHIELD_101",
         localIp: "192.168.0.6",
-        remotePort: 3030,
+        networkPort: 3030,
         ssid: "your_network_name",
         securityType: {
           wpa: {
@@ -37,7 +37,7 @@ describe("wifi.js", function () {
       wifi: {
         controller: "WIFI_SHIELD",
         localIp: "192.168.0.6",
-        remotePort: 3030,
+        networkPort: 3030,
         ssid: "your_network_name",
         securityType: {
           wep: {
@@ -56,7 +56,7 @@ describe("wifi.js", function () {
       wifi: {
         controller: "MKR1000",
         //localIp: "192.168.0.6",
-        remotePort: 3030,
+        networkPort: 3030,
         ssid: "your_network_name",
         securityType: {
           none: "none"
@@ -72,7 +72,7 @@ describe("wifi.js", function () {
       wifi: {
         controller: "ESP8266",
         localIp: "192.168.0.6",
-        remotePort: 3030,
+        networkPort: 3030,
         ssid: "your_network_name",
         securityType: {
           wpa: {
@@ -139,14 +139,14 @@ describe("wifi.js", function () {
       expect(text).to.have.string("WiFi.h");
     });
 
-    it("should define SERVER_IP if a remote server IP is specified", function () {
-      transport.configuration.serverIp = "192.168.0.1";
+    it("should define REMOTE_SERVER_IP if a remote server IP is specified", function () {
+      transport.configuration.remoteServerIp = "192.168.0.1";
       var text = transport.createConfigBlock();
-      expect(text).to.have.string("SERVER_IP 192, 168, 0, 1");
+      expect(text).to.have.string("REMOTE_SERVER_IP 192, 168, 0, 1");
     });
 
-    it("should throw an error if no remotePort is specified", function () {
-      transport.configuration.remotePort = "";
+    it("should throw an error if no networkPort is specified", function () {
+      transport.configuration.networkPort = "";
       var fn = function () {
         transport.createConfigBlock();
       };
@@ -229,13 +229,13 @@ describe("wifi.js", function () {
       expect(text).to.have.string("gateway(0, 0, 0, 0)");
     });
 
-    it("should a WiFiClientStream if a server IP is specified", function () {
-      transport.configuration.serverIp = "192.168.0.1";
+    it("should define a WiFiClientStream if a remote server IP is specified", function () {
+      transport.configuration.remoteServerIp = "192.168.0.1";
       var text = transport.createConfigBlock();
       expect(text).to.have.string("WiFiClientStream stream");
     });
 
-    it("should a WiFiServerStream if a server IP is NOT specified", function () {
+    it("should define a WiFiServerStream if a remote server IP is NOT specified", function () {
       var text = transport.createConfigBlock();
       expect(text).to.have.string("WiFiServerStream stream");
     });
