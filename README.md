@@ -31,10 +31,14 @@ To use:
     ```
 
     ```bash
+    $ node demo-wifi.js
+    ```
+
+    ```bash
     $ node demo-ethernet.js
     ```
 
-    The first command above will generate a file named *ConfiguredFirmata.ino* and the second will generate a file named *ConfiguredFirmataEthernet.ino* in the same directory. These examples also demonstrate the format of the object to be passed into the `build` method.
+    The first command above will generate a file named *ConfiguredFirmata.ino* and the second will generate a file named *ConfiguredFirmataWiFi.ino* in the same directory, etc. These examples also demonstrate the format of the object to be passed into the `build` method.
 
 5. Open ConfiguredFirmata.ino in the Arduino IDE and accept the prompt to move ConfiguredFirmata.ino into a ConfiguredFirmata sketch folder.
 
