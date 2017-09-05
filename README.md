@@ -24,7 +24,7 @@ To use:
     $ npm install firmata-builder
     ```
 
-4. Navigate to the `examples` directory and run either of the following command:
+4. Navigate to the `examples` directory and run one of the following command:
 
     ```bash
     $ node demo.js
@@ -36,6 +36,10 @@ To use:
 
     ```bash
     $ node demo-ethernet.js
+    ```
+
+    ```bash
+    $ node demo-ble.js
     ```
 
     The first command above will generate a file named *ConfiguredFirmata.ino* and the second will generate a file named *ConfiguredFirmataWiFi.ino* in the same directory, etc. These examples also demonstrate the format of the object to be passed into the `build` method.
