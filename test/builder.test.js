@@ -6,6 +6,7 @@ var builder = require("../lib/builder.js").builder;
 var SerialTransport = require("../lib/transports/serial.js");
 var EthernetTransport = require("../lib/transports/ethernet.js");
 var WiFiTransport = require("../lib/transports/wifi.js");
+var BLETransport = require("../lib/transports/ble.js");
 
 describe("builder.js", function () {
 
@@ -56,6 +57,19 @@ describe("builder.js", function () {
             passphrase: "your_wpa_passphrase"
           }
         }
+      }
+    },
+    selectedFeatures: featureList
+  };
+
+  var fakeDataBLE = {
+    filename: "TestFirmata",
+    connectionType: {
+      ble: {
+        controller: "ARDUINO_101",
+        minInterval: 6, // 7.5ms / 1.25
+        maxInterval: 24, // 30 ms / 1.25
+        localName: "FIRMATA"
       }
     },
     selectedFeatures: featureList
@@ -129,6 +143,11 @@ describe("builder.js", function () {
     it("should create a Wi-Fi transport", function () {
       builder.build(fakeDataWiFi);
       expect(builder.transport).to.be.instanceof(WiFiTransport);
+    });
+
+    it("should create a BLE transport", function () {
+      builder.build(fakeDataBLE);
+      expect(builder.transport).to.be.instanceof(BLETransport);
     });
 
   });
@@ -428,6 +447,11 @@ describe("builder.js", function () {
     it("should include call to ignorePins() if Ethernet and pins should be ignored", function () {
       var text = builder.build(fakeDataEthernet);
       expect(text).to.have.string("ignorePins()");
+    });
+
+    it("should include call to stream.poll() if BLE transport", function () {
+      var text = builder.build(fakeDataBLE);
+      expect(text).to.have.string("if (!stream.poll()) return");
     });
 
   });
