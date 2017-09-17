@@ -30,6 +30,7 @@ var simulatedUserInput = {
     "I2CFirmata",
     //"OneWireFirmata",
     //"StepperFirmata",
+    //"AccelStepperFirmata",
     //"SerialFirmata",
     //"FirmataScheduler"
   ]
