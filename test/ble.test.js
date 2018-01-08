@@ -45,7 +45,7 @@ describe("ble.js", function () {
       var data = _.clone(fakeDataArduino101, true);
       data.connectionType.ble.controller = "";
       var fn = function () {
-        new WiFiTransport({configuration: data.connectionType.ble});
+        new BLETransport({configuration: data.connectionType.ble});
       };
       expect(fn).to.throw(Error);
     });
@@ -54,7 +54,7 @@ describe("ble.js", function () {
       var data = _.clone(fakeDataArduino101, true);
       data.connectionType.ble.controller = "INVALID_CONTROLLER";
       var fn = function () {
-        new WiFiTransport({configuration: data.connectionType.ble});
+        new BLETransport({configuration: data.connectionType.ble});
       };
       expect(fn).to.throw(Error);
     });
