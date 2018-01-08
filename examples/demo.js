@@ -21,6 +21,9 @@ var simulatedUserInput = {
     "StepperFirmata",
     "AccelStepperFirmata",
     "SerialFirmata",
+    "RCOutputFirmata",
+    "RCInputFirmata",
+    "FirmataEncoder",
     "FirmataScheduler"
   ]
 };
