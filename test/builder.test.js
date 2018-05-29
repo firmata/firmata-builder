@@ -370,8 +370,8 @@ describe("builder.js", function () {
       expect(text).to.have.string("initTransport();");
     });
 
-    it("should include call to systemResetCallback()", function () {
-      expect(text).to.have.string("systemResetCallback();");
+    it("should include call to Firmata.parse(SYSTEM_RESET)", function () {
+      expect(text).to.have.string("Firmata.parse(SYSTEM_RESET);");
     });
   });
 
