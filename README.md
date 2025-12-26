@@ -3,7 +3,7 @@ Firmata Builder
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/firmata/firmata-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A module to generate an Arduino sketch (.ino) file from a selection of Firmata features. It is currently used by [firmatabuilder.com](http://firmatabuilder.com). However, because it is modular it could also be wraped to create a cli utility or even used in an IDE.
+A module to generate an Arduino sketch (.ino) file from a selection of Firmata features.
 
 To use:
 
